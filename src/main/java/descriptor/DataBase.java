@@ -1,5 +1,69 @@
 package descriptor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DataBase {
 
+	private String name;
+	private List<Table> tables;
+	private List<Procedure> procedures;
+	
+	
+	public DataBase(){}
+	
+	public DataBase(String name){
+		this.name = name;
+		tables = new ArrayList<Table>();
+		procedures = new ArrayList<Procedure>();
+	}
+	
+	
+	public void addTable(Table t){
+		tables.add(t);
+	}
+	
+	
+	public void addProcedure(Procedure p){
+		procedures.add(p);
+	}
+	
+	
+	public String getName(){
+		return name;
+	}
+	
+	
+	public List<Table> getTables(){
+		return tables;
+	}
+	
+	
+	public List<Procedure> getProcedures(){
+		return procedures;
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		DataBase db = (DataBase)o;
+		if(name.equals(db.getName())){
+			// falta
+		}else{ return false; }
+		return true;
+	}
+	
+	
+	public String compare(DataBase col){
+		// completar...
+		return "algo";
+	}
+	
+	@Override
+	public String toString(){
+		String s = "\nData Base: " + name + "\n";
+		for( int i = 0 ; i < tables.size() ; i++ ){
+			   s = s + tables.get( i ).toString() + "\n\n";
+			}
+		return s;
+	}
 }
