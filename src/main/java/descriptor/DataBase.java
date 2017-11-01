@@ -46,16 +46,17 @@ public class DataBase {
 	@Override
 	public boolean equals(Object o){
 		DataBase db = (DataBase)o;
-		if(name.equals(db.getName())){
-			// falta
-		}else{ return false; }
-		return true;
+		return(name.equals(db.getName()) && tables.equals(db.getTables()) && procedures.equals(db.getProcedures()));
 	}
 	
 	
-	public String compare(DataBase col){
-		// completar...
-		return "algo";
+	public String compare(DataBase db){
+		if (this.equals(db)) {
+		    return "DataBase "+name+" es igual a DataBase "+db.getName();
+		}
+		else {
+			return "DataBase "+name+" es distinto a DataBase "+db.getName();
+		}
 	}
 	
 	@Override
@@ -63,7 +64,16 @@ public class DataBase {
 		String s = "\nData Base: " + name + "\n";
 		for( int i = 0 ; i < tables.size() ; i++ ){
 			   s = s + tables.get( i ).toString() + "\n\n";
-			}
+		}
 		return s;
 	}
+	
+	public Table findTable(String name){
+		for( int i = 0 ; i < tables.size() ; i++ ){
+			   if (tables.get(i).getName().equals(name)){
+				   return tables.get(i);
+			   }
+		}
+		return null;
+	}	
 }

@@ -34,7 +34,6 @@ public class Column {
 		table = t;
 	}
 	
-	
 	@Override
 	public boolean equals(Object o){
 		Column col = (Column)o;
@@ -43,14 +42,17 @@ public class Column {
 	
 	
 	public String compare(Column col){
-		// completar...
-		return "algo";
+		if (this.equals(col)) {
+		    return "Column "+name+" es igual a Column "+col.getName();
+		}
+		else {
+			return "Column "+name+" es distinto a Column "+col.getName();
+		}
 	}
 	
 	@Override
 	public String toString(){
-		String s = "Name: " + name +" Type: " + type;
-		return s;
+		return ( "Name: " + name +" Type: " + type );
 	}
 	
 
