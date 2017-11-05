@@ -23,7 +23,8 @@ public class DBMaker {
 			
             DatabaseMetaData metaData = conn.getMetaData();
             String catalogo = conn.getCatalog();
-            String schema   = conn.getSchema();
+            String schema = db.getName();
+            //String schema   = conn.getSchema();
         
             List<Tuple> listFK = new ArrayList<Tuple>(); //usado para guardar temporalmente informacion de FK's
             
@@ -109,30 +110,13 @@ public class DBMaker {
                         } 
                     }
                     if(procedure.getResultType()==null){procedure.setResultType("void");} 
-                 }         
+                }     
+                db.addProcedure(procedure);
              }
             
          
         }catch(Exception cnfe) {System.err.println("Error");}		
 	}
-	
-
-
-
-public static void main(String[] args) { 
-    try{
-        String driver = "org.postgresql.Driver";
-        String url = "jdbc:postgresql://localhost:5432/postgres";
-        String username = "postgres";
-        String password = "root";
-
-        Class.forName(driver); 
-        Connection connection = DriverManager.getConnection(url, username, password);
-        DBMaker test = new DBMaker(connection, "databaseTest");
-        //test.getDB().show();
-    }catch(Exception cnfe) {System.err.println("Error");}	
-}
-
 }
 /*
 getShort(5); // COLUMN_TYPE Short => kind of column/parameter:
