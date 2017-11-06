@@ -59,6 +59,14 @@ public class DataBase {
 		}
 	}
 	
+	public void showDB(){	
+		for( int i = 0 ; i < tables.size() ; i++ ){
+			System.out.println("-------------------------------");
+			tables.get( i ).showTable();
+			System.out.println("-------------------------------");
+		}
+	}
+	
 	@Override
 	public String toString(){
 		String s = "\nData Base: " + name + "\n";
