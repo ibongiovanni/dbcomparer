@@ -25,4 +25,12 @@ public class ForeignKey {
 	public Column getRef(){
 		return referens;	
 	}
+	
+	public void showFK(){
+		System.out.println("Foreign-Key: ");
+		fk.showColumn();
+		System.out.println("References: ");
+		referens.showColumn();
+	}
+	
 }

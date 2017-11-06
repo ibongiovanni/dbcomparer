@@ -50,6 +50,10 @@ public class Column {
 		}
 	}
 	
+	public void showColumn(){
+		System.out.print("column: "+name+", type: "+type);
+	}
+	
 	@Override
 	public String toString(){
 		return ( "Name: " + name +" Type: " + type );

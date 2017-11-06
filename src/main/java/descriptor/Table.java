@@ -85,6 +85,20 @@ public class Table {
 		}
 	}
 	
+	public void showTable(){	
+		System.out.println("Table: "+name);
+		for( int i = 0 ; i < columns.size() ; i++ ){
+			   System.out.println("  -");
+			   columns.get( i ).showColumn();
+		}
+		for( int j = 0 ; j < primaryKey.size() ; j++ ){
+			   System.out.println("Primary Key: ");
+			   primaryKey.get( j ).showColumn();
+		}
+		for( int k = 0 ; k < foreignKey.size() ; k++ ){ 
+			   foreignKey.get( k ).showFK();
+		}	
+	}
 	
 	@Override
 	public String toString(){
@@ -104,5 +118,8 @@ public class Table {
 		}
 		return null;
 	}
+	
+	
+	
 	
 }
