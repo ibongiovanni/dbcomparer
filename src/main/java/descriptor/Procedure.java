@@ -10,7 +10,7 @@ public class Procedure {
 
   public Procedure(String n){
     name=n;
-    params=new ArrayList();
+    params=new ArrayList<>();
   }
 
   public void addParam(Param p){
@@ -48,4 +48,16 @@ public class Procedure {
     }
   }
 
+  @Override
+  public String toString(){
+    String ret = "Procedure ";
+    ret+=name+" ( ";
+    for ( Param p : params ) {
+      ret+= p + ", ";
+    }
+    if(!params.isEmpty()) ret = ret.substring(0,ret.length()-2)+") ";
+    else ret += ") ";
+    ret+= "returns "+resultType;
+    return ret+"\n";
+  }
 }
