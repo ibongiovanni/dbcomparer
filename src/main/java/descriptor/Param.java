@@ -39,4 +39,13 @@ public class Param {
       return "Param "+name+" es distinto a Param "+p.getName(); 
     }
   }
+
+  @Override
+  public String toString(){
+    String[] types = {"","IN","INOUT","RETURN","OUT"};
+    String ret = types[inout];
+    ret+= " "+name;
+    ret+= " "+type;
+    return ret;
+  }
 }

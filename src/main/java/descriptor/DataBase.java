@@ -73,6 +73,10 @@ public class DataBase {
 		for( int i = 0 ; i < tables.size() ; i++ ){
 			   s = s + tables.get( i ).toString() + "\n\n";
 		}
+		s+="Procedures:\n";
+		for ( Procedure p : procedures ) {
+			s+= p;
+		}
 		return s;
 	}
 	
