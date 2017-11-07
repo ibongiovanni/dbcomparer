@@ -30,25 +30,28 @@ public class DBMaker {
             
             //I get the tables from the database.
             String[] tipo = {"TABLE"};
-            ResultSet rsTables = metaData.getTables(catalogo,schema, null, tipo);
+            ResultSet rsTables = metaData.getTables(catalogo, schema, null, tipo);
             while(rsTables.next()){ 
                 String tableName = rsTables.getString(3);  //(3)TABLE_NAME 
-            	Table table = new Table(tableName);
+            	Table table = new Table(rsTables.getString(3).toLowerCase());
                 
             	
             	//I get the columns from the current table. 
                 ResultSet rsColumns = metaData.getColumns(null, null, tableName, null); 
                 while(rsColumns.next() ){
-                	Column col = new Column(rsColumns.getString(4),rsColumns.getString(6));
+                	String name = rsColumns.getString(4).toLowerCase();
+                	String type = rsColumns.getString(6).toLowerCase();
+                	Column col = new Column(name, type);
                 	col.setTable(table);
                 	table.addColumn(col);
                 }    
-	              
+                
                 
                 //I get the primary keys from the current table.
                 ResultSet primaryKeys = metaData.getPrimaryKeys(catalogo, schema, tableName); 
                 while(primaryKeys.next()) {
-                	Column pk = table.findColumn(primaryKeys.getString(4));
+                	String nameColumn = primaryKeys.getString(4).toLowerCase();
+                	Column pk = table.findColumn(nameColumn);
                 	if (pk != null){
                 		table.addPK(pk);
                 	} 
@@ -58,9 +61,9 @@ public class DBMaker {
                 //I get the foreign keys(part1).
                 ResultSet foreignKeys = metaData.getImportedKeys(catalogo, schema, tableName);
                 while(foreignKeys.next()){
-                	String ref_table  =	foreignKeys.getString(3); //table referenced by the FK
-                	String ref_column =	foreignKeys.getString(4); //column referenced by the FK          
-                	String fk_column = foreignKeys.getString(8);
+                	String ref_table  =	foreignKeys.getString(3).toLowerCase();; //table referenced by the FK
+                	String ref_column =	foreignKeys.getString(4).toLowerCase();; //column referenced by the FK          
+                	String fk_column = foreignKeys.getString(8).toLowerCase();;
                 	
                 	Column col = table.findColumn(fk_column); //look for the column of the FK in the current table
                 	ForeignKey fk = new ForeignKey();
@@ -70,28 +73,16 @@ public class DBMaker {
                 	listFK.add(tuple); //add information from this FK to my auxiliary list
                 }
                 
-                //Interfaz en utils..TriggerFindconection, tablename, schema
-                //Pasar todo a minusculas
                 
                 //I get the triggers from the current table.
-                Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);     
-                String query = "select * from information_schema.triggers where trigger_schema = '"+schema+"' and event_object_table ='"+tableName+"';";
-                ResultSet rs = stmt.executeQuery(query);
-                rs.beforeFirst();
-            	while(rs.next()){
-            		String name   = rs.getString("trigger_name");
-            		String event  = rs.getString("event_manipulation");
-            		String timing = rs.getString("action_timing");
-            		boolean tim;
-            		
-            		if(timing.equals("BEFORE")){ tim = true; }  //before = true 
-            		else { tim = false; }						//after = false
-            		
-            		Trigger trigger = new Trigger(name, tim, event);
-            		trigger.setTable(table);
-            		table.addTrigger(trigger);
-            	}
-            	//stmt.close();
+                TriggerGetter tg = new TGPostgres();
+                List<Trigger> trigList = tg.getTriggers(conn, schema, tableName); 
+        		for( int i = 0 ; i < trigList.size() ; i++ ){ 
+     			   Trigger trigger = trigList.get( i );
+     			   trigger.setTable(table);
+     			   table.addTrigger(trigger);
+        		}
+        		
                 db.addTable(table);
             }
              
@@ -107,28 +98,27 @@ public class DBMaker {
             	//I get the column that the FK references to (it's from another table)
             	Column col_ref = db.findTable(table_fk).findColumn(column_fk); 
             	fk.setRef(col_ref);
-            	t.addFK(fk);
-            	
+            	t.addFK(fk);	
  			}
-         
-
+            
+            
             //I get the procedures.
             ResultSet rsProc = metaData.getProcedures(catalogo, schema, "%");
             while(rsProc.next()) { 	
             	String procedureName = rsProc.getString(3);    
-                Procedure procedure = new Procedure(procedureName);
+                Procedure procedure = new Procedure(rsProc.getString(3).toLowerCase());
                 
                 //I get the parameters from the current procedure.
                 ResultSet rsPColum = metaData.getProcedureColumns(catalogo, schema, procedureName, null);
                 while(rsPColum.next()) {
-                	String name  = rsPColum.getString(4);  //parameter name
-                    short  inout = rsPColum.getShort(5);   //parameter in-out-inOut
-                    String type  = rsPColum.getString(7);  //parameter type
+                	String name  = rsPColum.getString(4).toLowerCase();  //parameter name
+                    short  inout = rsPColum.getShort(5);  				 //parameter in-out-inOut
+                    String type  = rsPColum.getString(7).toLowerCase();  //parameter type
                     if(!type.equals("trigger")){
-                    	if(name.equals("returnValue")){
+                    	if(name.equals("returnvalue")){
                     		procedure.setResultType(type);
                         }else{
-                            Param p = new Param(name, type, inout); //FALTA TRATAR!!!!!
+                            Param p = new Param(name, type, inout); 
                             procedure.addParam(p);
                         } 
                     }   
@@ -138,6 +128,12 @@ public class DBMaker {
                 }
                 db.addProcedure(procedure);
             } 
+            
+            //I get the constraints.
+            ConstraintGetter cg = new CGPostgres();
+            List<Constraint> consList = cg.getConstraints(conn, schema);
+            //Problem: CGPostgres.getConstraints() devuelve todas las constraints del schema,
+            //parseando la cadena solo obtendriamos la columna, pero no a que tabla pertenece.
             
           conn.close(); 
         }catch(Exception cnfe) {System.err.println("Error");}		

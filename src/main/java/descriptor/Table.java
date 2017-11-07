@@ -10,6 +10,7 @@ public class Table {
 	private List<Trigger> triggers;
 	private List<Column> primaryKey;
 	private List<ForeignKey> foreignKey;
+	private List<Constraint> constraint;
 	
 	
 	public Table(){}
@@ -20,6 +21,7 @@ public class Table {
 		triggers = new ArrayList<Trigger>();
 		primaryKey = new ArrayList<Column>();
 		foreignKey = new ArrayList<ForeignKey>();
+		constraint = new ArrayList<Constraint>();
 	}
 	
 	
@@ -42,6 +44,9 @@ public class Table {
 		foreignKey.add(fk);	
 	}
 	
+	public void addCheck(Constraint c){
+		constraint.add(c);	
+	}
 	
 	public String getName(){
 		return name;
@@ -64,15 +69,19 @@ public class Table {
 	
 	
 	public List<ForeignKey> getFK(){
-		return foreignKey;
-		
+		return foreignKey;	
 	}
 
+	public List<Constraint> getConstraint(){
+		return constraint;	
+	}
+	
 	@Override
 	public boolean equals(Object o){
 		Table t = (Table)o;
 		return ( name.equals(t.getName())) &&  (columns.equals(t.getColumns())) 
-		&& (triggers.equals(t.getTriggers())) && primaryKey.equals(t.getPK()) && (foreignKey.equals(t.getFK()));
+		&& (triggers.equals(t.getTriggers())) && primaryKey.equals(t.getPK()) && (foreignKey.equals(t.getFK())  
+		&& constraint.equals(t.getConstraint()));
 	}
 	
 	
