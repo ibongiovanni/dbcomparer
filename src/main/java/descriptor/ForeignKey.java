@@ -33,4 +33,10 @@ public class ForeignKey {
 		referens.showColumn();
 	}
 	
+	  @Override
+	  public boolean equals(Object o){
+		ForeignKey f = (ForeignKey)o;
+	    return (fk.equals(f.getFK()) && referens.equals(f.getRef()));
+	  }
+	
 }
