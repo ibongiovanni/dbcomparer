@@ -58,6 +58,6 @@ public class Procedure {
     if(!params.isEmpty()) ret = ret.substring(0,ret.length()-2)+") ";
     else ret += ") ";
     ret+= "returns "+resultType;
-    return ret+"\n";
+    return ret;
   }
 }

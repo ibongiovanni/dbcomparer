@@ -11,6 +11,8 @@ public class Table {
 	private List<Column> primaryKey;
 	private List<ForeignKey> foreignKey;
 	private List<Constraint> constraint;
+
+	private final String sep = "-------------------------------------------------------------\n";
 	
 	
 	public Table(){}
@@ -111,11 +113,38 @@ public class Table {
 	
 	@Override
 	public String toString(){
-		String s = "Table: " + name + "\n";
+		String s = sep+"Table: " + name + "\n";
+		s+=sep+"Columns:\n";
 		for( int i = 0 ; i < columns.size() ; i++ ){
 			   s = s +"-"+ columns.get( i ).toString() + "\n";
 		}
-		return s;
+		s+=sep+"Primary Key: ";
+		for ( Column c : primaryKey ) {
+			s+=c.getName()+" ";
+		}
+		s+="\n";
+		if (foreignKey.size()>0) {
+			s+=sep;
+			s+="Foreign Keys: \n";
+			for ( ForeignKey fk : foreignKey ) {
+				s+="-"+fk+"\n";
+			}
+		}
+		if (constraint.size()>0) {
+			s+=sep;
+			s+="Constraints: \n";
+			for ( Constraint c : constraint ) {
+				s+="-"+c+"\n";
+			}
+		}
+		if (triggers.size()>0) {
+			s+=sep;
+			s+="Triggers: \n";
+			for ( Trigger t : triggers ) {
+				s+="-"+t+"\n";
+			}
+		}
+		return s+sep;
 	}
 	
 	

@@ -33,10 +33,17 @@ public class ForeignKey {
 		referens.showColumn();
 	}
 	
-	  @Override
-	  public boolean equals(Object o){
+  @Override
+  public boolean equals(Object o){
 		ForeignKey f = (ForeignKey)o;
-	    return (fk.equals(f.getFK()) && referens.equals(f.getRef()));
-	  }
+    return (fk.equals(f.getFK()) && referens.equals(f.getRef()));
+  }
+
+  @Override
+  public String toString(){
+  	String ret="";
+  	ret+=fk.getName()+" References "+referens.getTable().getName()+"("+referens.getName()+")";
+  	return ret;
+  }
 	
 }

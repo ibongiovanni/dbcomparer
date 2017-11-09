@@ -50,4 +50,14 @@ public class Trigger {
     }
   }
 
+  @Override
+  public String toString(){
+    String ret = "Trigger ";
+    ret+= name+" on ";
+    ret+= table.getName()+" ";
+    ret+= (timing)? "BEFORE":"AFTER";
+    ret+= " "+event;
+    return ret;
+  }
+
 }
