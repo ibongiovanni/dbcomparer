@@ -46,7 +46,7 @@ public class Table {
 		foreignKey.add(fk);	
 	}
 	
-	public void addCheck(Constraint c){
+	public void addConstraint(Constraint c){
 		constraint.add(c);	
 	}
 	

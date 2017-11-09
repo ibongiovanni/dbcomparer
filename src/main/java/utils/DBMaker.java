@@ -83,6 +83,15 @@ public class DBMaker {
      			   table.addTrigger(trigger);
         		}
         		
+                //I get the constraints from the current table;
+                ConstraintGetter cg = new CGPostgres();
+                List<Constraint> consList = cg.getConstraints(conn, schema, tableName);  
+        		for( int i = 0 ; i < consList.size() ; i++ ){ 
+      			   Constraint cons = consList.get( i );
+      			   table.addConstraint(cons);
+         		}
+        		
+        		
                 db.addTable(table);
             }
              
@@ -128,13 +137,7 @@ public class DBMaker {
                 }
                 db.addProcedure(procedure);
             } 
-            
-            //I get the constraints.
-            ConstraintGetter cg = new CGPostgres();
-            List<Constraint> consList = cg.getConstraints(conn, schema);
-            //Problem: CGPostgres.getConstraints() devuelve todas las constraints del schema,
-            //parseando la cadena solo obtendriamos la columna, pero no a que tabla pertenece.
-            
+                      
           conn.close(); 
         }catch(Exception cnfe) {System.err.println("Error");}		
 	}
