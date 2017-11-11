@@ -83,7 +83,7 @@ public class DataBase {
         }
       }
     }
-    return ret;
+    return ret+sep;
   }
 
   public  String listTables(){

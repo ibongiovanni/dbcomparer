@@ -6,13 +6,13 @@ import java.util.List;
 public class Table {
 
 	private String name;
+	private DataBase database;
 	private List<Column> columns;
 	private List<Trigger> triggers;
 	private List<Column> primaryKey;
 	private List<ForeignKey> foreignKey;
 	private List<Constraint> constraint;
 
-	private final String sep = "-------------------------------------------------------------\n";
 	
 	
 	public Table(){}
@@ -77,6 +77,14 @@ public class Table {
 	public List<Constraint> getConstraint(){
 		return constraint;	
 	}
+
+	public void setDB(DataBase db){
+		database= db;
+	}
+
+	public DataBase getDB(){
+		return database;
+	}
 	
 	@Override
 	public boolean equals(Object o){
@@ -86,14 +94,54 @@ public class Table {
 		&& constraint.equals(t.getConstraint()));
 	}
 	
+	private final String sep = "-------------------------------------------------------------\n";
 	
 	public String compare(Table t){
-		if (this.equals(t)) {
-			return "Table "+name+" es igual a Table "+t.getName();
+		String ret="";
+		String db1= database.getName();
+		String db2=t.getDB().getName();
+		ret+= sep+"Table '"+name+"' from "+db1+" and "+db2+"\n"+sep;
+		ret+= "Columns in "+db1+"."+name+":\n "+listColumns(columns)+"\n";
+		ret+= "\nColumns in "+db2+"."+name+":\n "+listColumns(t.getColumns())+"\n";
+		ret+="\n";
+		if (columns.equals(t.getColumns())) {
+			ret+= "Both Tables has the same columns.\n";
 		}
-		else {
-		    return "Table "+name+" es distinto a Table "+t.getName();
+		else{
+			List<Column> commons = getCommonCoulumns(t);
+			if (commons.size()==0) {
+				ret+="There's no columns in common.\n";
+			}
+			else{
+				ret+= "Comparing columns with same name\n";
+				for ( Column c : commons ) {
+					ret+= " "+findColumn(c.getName()).compare(c)+"\n";
+				}
+			}
 		}
+		return ret+sep;
+	}
+
+	private List<Column> getCommonCoulumns(Table ot){
+		List<Column> others = ot.getColumns();
+    List<Column> commons = new ArrayList<>();
+    for ( Column c : columns ) {
+      for ( Column oc : others ) {
+        //Both tables has the same name
+        if (c.getName().equals(oc.getName())) {
+          commons.add(oc);
+        }
+      }
+    }
+    return commons;
+	}
+
+	public String listColumns(List<Column> list){
+		String ret = "";
+    for ( Column c : list ) {
+      ret+= c.getName()+"("+c.getType()+") | ";
+    }
+    return ret;
 	}
 	
 	public void showTable(){	
