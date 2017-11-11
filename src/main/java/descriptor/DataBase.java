@@ -65,6 +65,7 @@ public class DataBase {
   
   public String compare(DataBase db){
     String ret="";
+    //TABLES COMPARISON
     ret+= sep+"Table Level Comparison:\n"+sep;
     ret+= "\nTables in "+name+":\n"+listTables()+"\n";
     ret+= "\nTables in "+db.getName()+": \n"+db.listTables()+"\n\n";
@@ -77,12 +78,15 @@ public class DataBase {
         ret+= "DataBase "+name+" and DataBase "+db.getName()+" has no tables with same name.\n";
       }
       else {
-        ret+= "Comparing tables with same name\n";
+        ret+= "Number of tables with same name: "+commonTables.size()+".\n";
+        ret+= "Comparing tables with same name:\n";
         for ( Table ot : commonTables ) {
-          ret+= findTable(ot.getName()).compare(ot)+"\n";
+          ret+= tabulate(findTable(ot.getName()).compare(ot))+"\n";
         }
       }
     }
+    //PROCEDURES COMPARISON
+
     return ret+sep;
   }
 

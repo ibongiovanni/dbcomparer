@@ -101,24 +101,34 @@ public class Table {
 		String db1= database.getName();
 		String db2=t.getDB().getName();
 		ret+= sep+"Table '"+name+"' from "+db1+" and "+db2+"\n"+sep;
-		ret+= "Columns in "+db1+"."+name+":\n "+listColumns(columns)+"\n";
-		ret+= "\nColumns in "+db2+"."+name+":\n "+listColumns(t.getColumns())+"\n";
+		//COLUMNS COMPARISON
+		ret+= "Columns in "+db1+"."+name+" ("+columns.size()+"):\n "+listColumns(columns)+"\n";
+		ret+= "\nColumns in "+db2+"."+name+" ("+t.getColumns().size()+"):\n "+listColumns(t.getColumns())+"\n";
 		ret+="\n";
 		if (columns.equals(t.getColumns())) {
-			ret+= "Both Tables has the same columns.\n";
+			ret+= " \u2713 Both Tables have the same columns.\n";
 		}
 		else{
 			List<Column> commons = getCommonCoulumns(t);
 			if (commons.size()==0) {
-				ret+="There's no columns in common.\n";
+				ret+=" \u292B There's no columns in common.\n";
 			}
 			else{
-				ret+= "Comparing columns with same name\n";
+				ret+= "Number of columns with same name: "+commons.size()+".\n";
+				ret+= "Comparing columns with same name:\n";
 				for ( Column c : commons ) {
 					ret+= " "+findColumn(c.getName()).compare(c)+"\n";
 				}
 			}
 		}
+		//PRIMARY KEYS COMPARISON
+
+		//FOREIGN KEYS COMPARISON
+
+		//CONSTRAINTS COMPARISON
+
+		//TRIGGERS COMPARISON
+		
 		return ret+sep;
 	}
 
@@ -139,9 +149,10 @@ public class Table {
 	public String listColumns(List<Column> list){
 		String ret = "";
     for ( Column c : list ) {
-      ret+= c.getName()+"("+c.getType()+") | ";
+      ret+= c.getName()+" | ";
     }
-    return ret;
+    ret = ret.substring(0,ret.length()-2);
+    return "[ "+ret+"]";
 	}
 	
 	public void showTable(){	
