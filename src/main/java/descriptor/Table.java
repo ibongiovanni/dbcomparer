@@ -156,7 +156,17 @@ public class Table {
 			}
 		}
 		//CONSTRAINTS COMPARISON
-
+		ret+= sep;
+		List<Constraint> commonCons = getCommonConstraints(t);
+		if (commonCons.size()==0) {
+			ret+= "Constraints:\n \u292B There are no Constraints in common.\n";
+		}
+		else{
+			ret+= "Constraints in common:\n";
+			for ( Constraint c : commonCons ) {
+				ret+= " \u2713 "+c.getConstraint()+"\n";
+			}
+		}
 		//TRIGGERS COMPARISON
 
 		return ret+sep;
@@ -193,6 +203,20 @@ public class Table {
 				//Both fks have the same column
 				if (fk.getFK().getName().equals(ofk.getFK().getName())) {
 					commons.add(ofk);
+				}
+			}
+		}
+		return commons;
+	}
+
+	private List<Constraint> getCommonConstraints(Table t){
+		List<Constraint> others = t.getConstraint();
+		List<Constraint> commons = new ArrayList<>();
+		for ( Constraint c : constraint ) {
+			for ( Constraint oc : others ) {
+				//Both constraints have the same clause
+				if (c.getConstraint().equals(oc.getConstraint())) {
+					commons.add(oc);
 				}
 			}
 		}
