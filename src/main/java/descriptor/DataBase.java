@@ -106,7 +106,7 @@ public class DataBase {
     }
   }
   
-  private String sep = "#############################################################\n";
+  private String sep = "#################################################################################\n";
     
   @Override
   public String toString(){

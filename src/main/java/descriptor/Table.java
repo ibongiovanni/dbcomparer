@@ -122,13 +122,43 @@ public class Table {
 			}
 		}
 		//PRIMARY KEYS COMPARISON
-
+		ret+= sep+"Primary Keys:\n";
+		if (primaryKey.equals(t.getPK())) {
+			ret+= " \u2713 In both tables the Primary Key is (";
+			for ( Column c : primaryKey ) {
+				ret+= c.getName()+",";
+			}
+			ret = ret.substring(0,ret.length()-1);
+			ret+= ")\n";
+		}
+		else {
+			ret+= " \u292B The PK of '"+database.getName()+"."+name+"' is (";
+			for ( Column c : primaryKey ) {
+				ret+= c.getName()+",";
+			}
+			ret = ret.substring(0,ret.length()-1);
+			ret+= ") and the PK of '"+t.getDB().getName()+"."+t.getName()+"' is (";
+			for ( Column c : t.getPK() ) {
+				ret+= c.getName()+",";
+			}
+			ret = ret.substring(0,ret.length()-1);
+			ret+= ")\n";
+		}
 		//FOREIGN KEYS COMPARISON
-
+		ret+= sep+"Foreign Keys:\n";
+		List<ForeignKey> commons = getCommonFKs(t);
+		if (commons.size()==0) {
+			ret+= " \u292B There are no Foreign Keys in common.\n";
+		}
+		else{
+			for ( ForeignKey fk : commons ) {
+				ret+= " "+findFK(fk.getFK()).compare(fk)+"\n";
+			}
+		}
 		//CONSTRAINTS COMPARISON
 
 		//TRIGGERS COMPARISON
-		
+
 		return ret+sep;
 	}
 
@@ -155,6 +185,20 @@ public class Table {
     return "[ "+ret+"]";
 	}
 	
+	private List<ForeignKey> getCommonFKs(Table t){
+		List<ForeignKey> others = t.getFK();
+		List<ForeignKey> commons = new ArrayList<>();
+		for ( ForeignKey fk : foreignKey ) {
+			for ( ForeignKey ofk : others ) {
+				//Both fks have the same column
+				if (fk.getFK().getName().equals(ofk.getFK().getName())) {
+					commons.add(ofk);
+				}
+			}
+		}
+		return commons;
+	}
+
 	public void showTable(){	
 		System.out.println("Table: "+name);
 		for( int i = 0 ; i < columns.size() ; i++ ){
@@ -216,6 +260,14 @@ public class Table {
 		return null;
 	}
 	
+	public ForeignKey findFK(Column col){
+		for( int i = 0 ; i < foreignKey.size() ; i++ ){
+			   if (foreignKey.get(i).getFK().getName().equals(col.getName())){
+				   return foreignKey.get(i);
+			   }
+		}
+		return null;
+	}
 	
 	
 	
