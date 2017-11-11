@@ -49,14 +49,49 @@ public class DataBase {
     return(name.equals(db.getName()) && tables.equals(db.getTables()) && procedures.equals(db.getProcedures()));
   }
   
+  private List<Table> getCommonTables(DataBase db){
+    List<Table> others = db.getTables();
+    List<Table> commons = new ArrayList<>();
+    for ( Table t : tables ) {
+      for ( Table ot : others ) {
+        //Both tables has the same name
+        if (t.getName().equals(ot.getName())) {
+          commons.add(ot);
+        }
+      }
+    }
+    return commons;
+  }
   
   public String compare(DataBase db){
-    if (this.equals(db)) {
-        return "DataBase "+name+" es igual a DataBase "+db.getName();
+    String ret="";
+    ret+= sep+"Table Level Comparison:\n"+sep;
+    ret+= "\nTables in "+name+":\n"+listTables()+"\n";
+    ret+= "\nTables in "+db.getName()+": \n"+db.listTables()+"\n\n";
+    if (tables.equals(db.getTables())) {
+      ret+= "DataBase "+name+" and DataBase "+db.getName()+" has the same tables.\n";
     }
     else {
-      return "DataBase "+name+" es distinto a DataBase "+db.getName();
+      List<Table> commonTables = getCommonTables(db); //tables from db with same name
+      if (commonTables.size()==0) {
+        ret+= "DataBase "+name+" and DataBase "+db.getName()+" has no tables with same name.\n";
+      }
+      else {
+        ret+= "Comparing tables with same name\n";
+        for ( Table ot : commonTables ) {
+          ret+= findTable(ot.getName()).compare(ot)+"\n";
+        }
+      }
     }
+    return ret;
+  }
+
+  public  String listTables(){
+    String ret = "";
+    for ( Table t : tables ) {
+      ret+= t.getName()+" | ";
+    }
+    return ret;
   }
   
   public void showDB(){ 
@@ -67,9 +102,10 @@ public class DataBase {
     }
   }
   
+  private String sep = "#############################################################\n";
+    
   @Override
   public String toString(){
-    String sep = "#############################################################\n";
     String s = sep+"Data Base: " + name + "\n";
     for( int i = 0 ; i < tables.size() ; i++ ){
       String t;
