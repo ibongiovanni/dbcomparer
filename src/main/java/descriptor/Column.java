@@ -56,7 +56,7 @@ public class Column {
 	
 	@Override
 	public String toString(){
-		return ( "Name: " + name +" Type: " + type );
+		return ( "Name: " + name +"\t Type: " + type );
 	}
 	
 
