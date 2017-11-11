@@ -18,7 +18,7 @@ public class Table {
 	public Table(){}
 	
 	public Table(String name){
-		this.name = name;
+		this.name = name.toLowerCase();
 		columns = new ArrayList<Column>();
 		triggers = new ArrayList<Trigger>();
 		primaryKey = new ArrayList<Column>();

@@ -25,12 +25,13 @@ public class CGPostgres implements ConstraintGetter {
             while(rs.next()){
             	//rs.getString("constraint_schema");
             	//rs.getString("table_name");
-                String name = rs.getString("constraint_name");
-                String clause =  rs.getString("check_clause");
+                String name   = rs.getString("constraint_name");
+                String clause = rs.getString("check_clause");
                 
                 Constraint cons = new Constraint(name,clause);
                 listCons.add(cons);
             }
+            stmt.close();
             return listCons;
 		}catch(Exception cnfe) {System.err.println("Error");}
 	 	return null;   	 		 	

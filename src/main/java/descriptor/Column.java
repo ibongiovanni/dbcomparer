@@ -10,8 +10,8 @@ public class Column {
 	public Column(){}
 	
 	public Column(String name, String type){
-		this.name = name;
-		this.type = type;		
+		this.name = name.toLowerCase();
+		this.type = type.toLowerCase();		
 	}
 	
 	

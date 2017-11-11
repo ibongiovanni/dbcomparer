@@ -5,8 +5,8 @@ public class Constraint{
 	private String clause;
 	
 	public Constraint(String name, String clause){
-		this.clause = clause;
-		this.name = name;
+		this.clause = clause.toLowerCase();
+		this.name = name.toLowerCase();
 	}
 	
 	public String getConstraint(){
@@ -14,7 +14,7 @@ public class Constraint{
 	}
 	
 	public void setConstraint(String clause){
-		this.clause = clause;	
+		this.clause = clause.toLowerCase();	
 	}
 	
 	public String getName(){
@@ -22,7 +22,7 @@ public class Constraint{
 	}
 	
 	public void setName(String name){
-		this.name = name;	
+		this.name = name.toLowerCase();	
 	}
 	@Override
 	public boolean equals(Object o){

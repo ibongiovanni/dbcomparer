@@ -24,7 +24,6 @@ public class DBMaker {
             DatabaseMetaData metaData = conn.getMetaData();
             String catalogo = conn.getCatalog();
             String schema = db.getName();
-            //String schema   = conn.getSchema();
         
             List<Tuple> listFK = new ArrayList<Tuple>(); //used to temporarily save information from FK's
             
@@ -33,15 +32,15 @@ public class DBMaker {
             ResultSet rsTables = metaData.getTables(catalogo, schema, null, tipo);
             while(rsTables.next()){ 
                 String tableName = rsTables.getString(3);  //(3)TABLE_NAME 
-            	Table table = new Table(rsTables.getString(3).toLowerCase());
+            	Table table = new Table(tableName);
                 
             	
             	//I get the columns from the current table. 
                 ResultSet rsColumns = metaData.getColumns(null, null, tableName, null); 
                 while(rsColumns.next() ){
-                	String name = rsColumns.getString(4).toLowerCase();
-                	String type = rsColumns.getString(6).toLowerCase();
-                	Column col = new Column(name, type);
+                	String name = rsColumns.getString(4);
+                	String type = rsColumns.getString(6);
+                	Column col  = new Column(name, type);
                 	col.setTable(table);
                 	table.addColumn(col);
                 }    
@@ -56,14 +55,13 @@ public class DBMaker {
                 		table.addPK(pk);
                 	} 
                 }
-                
-                
-                //I get the foreign keys(part1).
+                               
+                //I get the foreign keys from the current table(part1).
                 ResultSet foreignKeys = metaData.getImportedKeys(catalogo, schema, tableName);
                 while(foreignKeys.next()){
-                	String ref_table  =	foreignKeys.getString(3).toLowerCase();; //table referenced by the FK
-                	String ref_column =	foreignKeys.getString(4).toLowerCase();; //column referenced by the FK          
-                	String fk_column = foreignKeys.getString(8).toLowerCase();;
+                	String ref_table  =	foreignKeys.getString(3).toLowerCase(); //table referenced by the FK
+                	String ref_column =	foreignKeys.getString(4).toLowerCase(); //column referenced by the FK          
+                	String fk_column  = foreignKeys.getString(8).toLowerCase(); //column_name of the FK
                 	
                 	Column col = table.findColumn(fk_column); //look for the column of the FK in the current table
                 	ForeignKey fk = new ForeignKey();
@@ -72,8 +70,7 @@ public class DBMaker {
                 	Tuple tuple  = new Tuple(ref_table, ref_column, fk);
                 	listFK.add(tuple); //add information from this FK to my auxiliary list
                 }
-                
-                
+                                
                 //I get the triggers from the current table.
                 TriggerGetter tg = new TGPostgres();
                 List<Trigger> trigList = tg.getTriggers(conn, schema, tableName); 
@@ -82,25 +79,22 @@ public class DBMaker {
      			   trigger.setTable(table);
      			   table.addTrigger(trigger);
         		}
-        		
-                //I get the constraints from the current table;
+        		        		
+                //I get the check constraints from the current table;
                 ConstraintGetter cg = new CGPostgres();
                 List<Constraint> consList = cg.getConstraints(conn, schema, tableName);  
         		for( int i = 0 ; i < consList.size() ; i++ ){ 
       			   Constraint cons = consList.get( i );
       			   table.addConstraint(cons);
          		}
-        		
-        		
+        		    		
                 db.addTable(table);
             }
-             
-            
+                        
             //I get the foreign keys(part2).
             for( int i = 0 ; i < listFK.size() ; i++ ){
             	ForeignKey fk = listFK.get(i).getThird();
             	Table t = fk.getFK().getTable(); //table corresponding to the FK
-            	
             	String table_fk  = listFK.get(i).getFirst();
             	String column_fk = listFK.get(i).getSecond();
             	
@@ -109,8 +103,7 @@ public class DBMaker {
             	fk.setRef(col_ref);
             	t.addFK(fk);	
  			}
-            
-            
+                    
             //I get the procedures.
             ResultSet rsProc = metaData.getProcedures(catalogo, schema, "%");
             while(rsProc.next()) { 	
@@ -123,22 +116,23 @@ public class DBMaker {
                 	String name  = rsPColum.getString(4).toLowerCase();  //parameter name
                     short  inout = rsPColum.getShort(5);  				 //parameter in-out-inOut
                     String type  = rsPColum.getString(7).toLowerCase();  //parameter type
-                    if(!type.equals("trigger")){
+                    if(!type.equals("trigger")){ 
+                    	
                     	if(name.equals("returnvalue")){
                     		procedure.setResultType(type);
                         }else{
                             Param p = new Param(name, type, inout); 
                             procedure.addParam(p);
                         } 
-                    }   
+                    }else{ procedure.setResultType("trigger"); }   
                 }
-                if(procedure.getResultType()==null){
+                if(procedure.getResultType() == null){
                 	procedure.setResultType("void");
                 }
                 db.addProcedure(procedure);
             } 
-                      
-          conn.close(); 
+            
+            conn.close();  
         }catch(Exception cnfe) {System.err.println("Error");}		
 	}
 }

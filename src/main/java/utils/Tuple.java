@@ -5,7 +5,7 @@ import descriptor.ForeignKey;
  /*
  * Uso esta clase para almacenar temporalmente informacion de las FK's.
  * Esto se debe a que mientras creo una tabla con sus respectivas fk's las tablas a las que referencian las mismas
- * muy posiblemente aun no fueron obtenidas.* 
+ * muy posiblemente aun no fueron obtenidas. 
  */
 
 public class Tuple {
