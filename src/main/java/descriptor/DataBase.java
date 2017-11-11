@@ -74,7 +74,7 @@ public class DataBase {
     for( int i = 0 ; i < tables.size() ; i++ ){
       String t;
       t = tables.get( i ).toString() + "\n";
-      s += t;//tabulate(t);
+      s += tabulate(t)+"\n";
     }
     s+="Procedures:\n";
     for ( Procedure p : procedures ) {
@@ -96,7 +96,7 @@ public class DataBase {
     String[] lines = in.split("\n");
     StringBuilder builder = new StringBuilder();
     for (String line : lines) {
-        builder.insert(0,line);
+        builder.append("\t|"+line);
         // I suspect you want this, otherwise you're losing line breaks.
         builder.append("\n");
     }
