@@ -23,7 +23,7 @@ public class App {
       System.out.println("Connecting to database...");
       conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
-      DBMaker test = new DBMaker(conn, "p5e5");
+      DBMaker test = new DBMaker(conn, "p3e2");
 
       test.buildDB();
       DataBase db = test.getDB();
@@ -31,6 +31,19 @@ public class App {
       System.out.println(db);
       
       conn.close();
+
+      System.out.println("Connecting to database...");
+      conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+      test = new DBMaker(conn, "p3e2b");
+
+      test.buildDB();
+      DataBase db2 = test.getDB();
+
+      System.out.println(db2);
+
+      System.out.println(db.compare(db2));
+
     }catch(ClassNotFoundException cnfe) {
       System.err.println("Error loading driver: " + cnfe);
     }catch(SQLException se){
