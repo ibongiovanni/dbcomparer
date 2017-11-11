@@ -43,10 +43,10 @@ public class Column {
 	
 	public String compare(Column col){
 		if (this.equals(col)) {
-		    return "Column "+name+" es igual a Column "+col.getName();
+		  return "Column '"+name+"': Both Columns have the same type: '"+type+"'";
 		}
 		else {
-			return "Column "+name+" es distinto a Column "+col.getName();
+			return "Column '"+name+"': in "+table.getDB().getName()+" is of type '"+type+"' and in "+col.getTable().getDB().getName()+" is of type '"+col.getType()+"'";
 		}
 	}
 	
@@ -56,7 +56,7 @@ public class Column {
 	
 	@Override
 	public String toString(){
-		return ( "Name: " + name +" Type: " + type );
+		return ( "Name: " + name +"\t Type: " + type );
 	}
 	
 

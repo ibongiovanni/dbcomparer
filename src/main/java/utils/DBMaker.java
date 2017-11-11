@@ -36,7 +36,7 @@ public class DBMaker {
                 
             	
             	//I get the columns from the current table. 
-                ResultSet rsColumns = metaData.getColumns(null, null, tableName, null); 
+                ResultSet rsColumns = metaData.getColumns(null, schema, tableName, null); 
                 while(rsColumns.next() ){
                 	String name = rsColumns.getString(4);
                 	String type = rsColumns.getString(6);
@@ -87,7 +87,8 @@ public class DBMaker {
       			   Constraint cons = consList.get( i );
       			   table.addConstraint(cons);
          		}
-        		    		
+
+        		table.setDB(db);
                 db.addTable(table);
             }
                         

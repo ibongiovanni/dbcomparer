@@ -27,7 +27,12 @@ public class Constraint{
 	@Override
 	public boolean equals(Object o){
 		Constraint c = (Constraint)o;
-		return clause.equals(c.getConstraint()) && name.equals(c.getName());
+		return clause.equals(c.getConstraint());// && name.equals(c.getName());
+	}
+
+	@Override
+	public String toString(){
+		return name+" = "+clause;
 	}
 	
 
