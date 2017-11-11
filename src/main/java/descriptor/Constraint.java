@@ -1,10 +1,12 @@
 package descriptor;
 
 public class Constraint{
+	private String name;
 	private String clause;
 	
-	public Constraint(String clause){
+	public Constraint(String name, String clause){
 		this.clause = clause;
+		this.name = name;
 	}
 	
 	public String getConstraint(){
@@ -15,10 +17,17 @@ public class Constraint{
 		this.clause = clause;	
 	}
 	
+	public String getName(){
+		return name;
+	}
+	
+	public void setName(String name){
+		this.name = name;	
+	}
 	@Override
 	public boolean equals(Object o){
 		Constraint c = (Constraint)o;
-		return clause.equals(c.getConstraint());
+		return clause.equals(c.getConstraint()) && name.equals(c.getName());
 	}
 	
 

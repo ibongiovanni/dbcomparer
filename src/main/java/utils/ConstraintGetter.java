@@ -9,6 +9,6 @@ import descriptor.Constraint;
 
 public interface ConstraintGetter {
 	
-	public List<Constraint> getConstraints(Connection conn, String schema) throws SQLException;
+	public List<Constraint> getConstraints(Connection conn, String schema, String tableName) throws SQLException;
 
 }
