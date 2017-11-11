@@ -19,7 +19,7 @@ public class CGPostgres implements ConstraintGetter {
 			List<Constraint> listCons = new ArrayList<Constraint>();
             String check ="CHECK";
             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String query = "SELECT tc.constraint_schema, tc.constraint_name, tc.table_name, cc.check_clause FROM information_schema.table_constraints as tc JOIN information_schema.check_constraints as cc ON tc.constraint_name = cc.constraint_name WHERE tc.table_name ='"+tableName+"' and tc.constraint_schema ='"+schema+"' and tc.constraint_type ='"+check+"';";
+            String query = "SELECT tc.constraint_schema, tc.constraint_name, tc.table_name, cc.check_clause FROM information_schema.table_constraints as tc NATURAL JOIN information_schema.check_constraints as cc WHERE tc.table_name ='"+tableName+"' and tc.constraint_name = cc.constraint_name and tc.constraint_schema ='"+schema+"' and tc.constraint_type ='"+check+"';";
             ResultSet rs = stmt.executeQuery(query);
             rs.beforeFirst();
             while(rs.next()){
