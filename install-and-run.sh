@@ -5,9 +5,9 @@ mvn clean install
 
 echo "*******************  COLLECTING DEPENDENCIES  *********************************"
 mvn dependency:copy-dependencies
-export CLASSPATH=""
-for file in `ls target/dependency`; do export CLASSPATH=$CLASSPATH:target/dependency/$file; done
-export CLASSPATH=$CLASSPATH:target/classes
 
-echo "*******************  EXECUTING PROGRAM******************************************"
-java -cp $CLASSPATH App
+
+DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+
+. $DIR/run.sh "$1" "$2"
