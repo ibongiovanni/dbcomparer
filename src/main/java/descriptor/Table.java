@@ -94,7 +94,7 @@ public class Table {
     && constraint.equals(t.getConstraint()));
   }
   
-  private final String sep = "-------------------------------------------------------------\n";
+  private final String sep = "------------------------------------------------------------------------------\n";
   
   public String compare(Table t){
     String ret="";
