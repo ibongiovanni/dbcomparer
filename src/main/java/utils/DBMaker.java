@@ -122,7 +122,8 @@ public class DBMaker {
                     	if(name.equals("returnvalue")){
                     		procedure.setResultType(type);
                         }else{
-                            Param p = new Param(name, type, inout); 
+                            Param p = new Param(name, type, inout);
+                            p.setProcedure(procedure);
                             procedure.addParam(p);
                         } 
                     }else{ procedure.setResultType("trigger"); }   
@@ -130,6 +131,7 @@ public class DBMaker {
                 if(procedure.getResultType() == null){
                 	procedure.setResultType("void");
                 }
+                procedure.setDB(db);
                 db.addProcedure(procedure);
             } 
             
