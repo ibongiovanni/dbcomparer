@@ -43,10 +43,10 @@ public class Column {
 	
 	public String compare(Column col){
 		if (this.equals(col)) {
-		  return "Column '"+name+"': Both Columns have the same type: '"+type+"'";
+		  return "Column '"+name+"': \u2713 Both Columns have the same type: '"+type+"'";
 		}
 		else {
-			return "Column '"+name+"': in "+table.getDB().getName()+" is of type '"+type+"' and in "+col.getTable().getDB().getName()+" is of type '"+col.getType()+"'";
+			return "Column '"+name+"': \u292B In "+table.getDB().getName()+" is of type '"+type+"' and in "+col.getTable().getDB().getName()+" is of type '"+col.getType()+"'";
 		}
 	}
 	
