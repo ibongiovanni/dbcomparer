@@ -23,7 +23,7 @@ public class App {
       System.out.println("Connecting to database...");
       conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
-      DBMaker test = new DBMaker(conn, "p3e2");
+      DBMaker test = new DBMaker(conn, "database1");
 
       test.buildDB();
       DataBase db = test.getDB();
@@ -35,7 +35,7 @@ public class App {
       System.out.println("Connecting to database...");
       conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
-      test = new DBMaker(conn, "p3e2b");
+      test = new DBMaker(conn, "database4");
 
       test.buildDB();
       DataBase db2 = test.getDB();
