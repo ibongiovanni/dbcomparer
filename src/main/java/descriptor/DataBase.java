@@ -89,8 +89,8 @@ public class DataBase {
     //PROCEDURES COMPARISON
     ret+=sep;
     ret+= sep+"Procedure Level Comparison:\n"+sep;
-    //ret+= "\nProcedures in "+name+":\n"+listProcedures(procedures)+"\n";
-    //ret+= "\nProcedures in "+db.getName()+": \n"+db.listProcedures(db.getProcedures())+"\n\n";
+    ret+= "\nProcedures in "+name+":\n"+listProcedures(procedures)+"\n";
+    ret+= "\nProcedures in "+db.getName()+": \n"+db.listProcedures(db.getProcedures())+"\n\n";
     if (procedures.equals(db.getProcedures())) {
       ret+= "DataBase "+name+" and DataBase "+db.getName()+" has the same Procedures.\n";
     }
@@ -109,7 +109,7 @@ public class DataBase {
     	ret+=sep2;  
         ret+= "Comparing procedures with same name:\n";
         for ( Procedure op : commonProcedures ) {
-          ret+= findProcedure(op.getName()).compare(op)+"\n";
+          ret+= tabulate(findProcedure(op.getName()).compare(op))+"\n";
         }
         List<Procedure> current_uncommon = getUnCommonProcedures(commonProcedures);
         List<Procedure> db_uncommon = db.getUnCommonProcedures(commonProcedures);

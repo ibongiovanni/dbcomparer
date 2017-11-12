@@ -53,11 +53,18 @@ public class Procedure {
 	  String ret="";
 	  if (this.equals(p)) {
 		  ret+=sep2;
-		  ret+="Procedure '"+name+"': Both Procedures have the same profile\n";
+		  ret+="Procedure '"+name+"':\n \u2713 Both Procedures have the same profile: (";
+      for ( Param pa : params ) {
+        ret+= pa + ", ";
+      }
+      if(!params.isEmpty()) ret = ret.substring(0,ret.length()-2)+") ";
+      else ret += ") ";
+      ret+= "returns "+resultType;
+      ret+="\n";
 	  }
 	  else {
 		    ret+=sep2;
-		    ret+="Procedure '"+name+"'\n\n"; 
+		    ret+="Procedure '"+name+"':\n\n"; 
 		    List<Param> otherparams = p.getParams();
 		    
 		    int long_other = otherparams.size();
@@ -81,7 +88,7 @@ public class Procedure {
 						ret+="*Parameter "+(i+1)+"\n";
 						ret+= param.compare(op);						
 					}
-					ret+= "\nThe procedure in "+p.getDB().getName()+" have "+extra+" parameters aditional:\n";
+					ret+= "\nThe procedure in "+p.getDB().getName()+" has "+extra+" parameters additional:\n";
 					for(int j = 0 ; j < extra ; j++){
 						ret+="*Parameter "+(long_current+j+1)+": "+otherparams.get(long_current+j);
 						ret+="\n";
@@ -95,7 +102,7 @@ public class Procedure {
 						ret+="*Parameter "+(i+1)+"\n";
 						ret+= param.compare(op);							
 					}
-					ret+= "\nThe procedure in "+getDB().getName()+" have "+extra+" parameters aditional:\n";
+					ret+= "\nThe procedure in "+getDB().getName()+" has "+extra+" parameters additional:\n";
 					for(int j = 0 ; j < extra ; j++){
 						ret+="*Parameter "+(long_other+j+1)+": "+params.get(long_other+j);	
 						ret+="\n";
@@ -105,15 +112,15 @@ public class Procedure {
 
 			}
 			if(resultType.equals(p.getResultType())){
-				ret+="Both have the equal type of return value\n";			
+				ret+="\u2713 Both have the equal type of return value: '"+resultType+"'\n";			
 			}else{
-				ret+= "The procedure in "+getDB().getName()+ " have the type of return value: '"+resultType+"'\n";
-				ret+= "The procedure in "+p.getDB().getName()+ " have the type of return value: '"+p.getResultType()+"'\n";
+				ret+= "\u292B The result type in "+getDB().getName()+ " is '"+resultType;
+				ret+= "' and in "+p.getDB().getName()+ " is '"+p.getResultType()+"'\n";
 				
 			}
 	  }
 		    
-	  return ret;
+	  return ret+sep2;
   }
   
   private final String sep2 = "-------------------------------------------------------------\n";

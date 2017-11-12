@@ -44,25 +44,25 @@ public class Param {
   public String compare(Param p){
 	  String ret ="";
     if (this.equals(p)) {
-       ret+="  -Both are equals\n";
+       ret+="  \u2713 Both are equals\n";
     }
     else {
     	 ret+="";	
       if(name.equals(p.getName())) {
-    	  ret+= "  -Both have the equal name\n";}
+    	  ret+= "  \u2713 Both have the equal name: '"+name+"'\n";}
       else{
-    	  ret+="  -In "+getProcedure().getDB().getName()+" is named '"+name+ "' and in "+p.getProcedure().getDB().getName()+" is named '"+p.getName()+"'\n";
+    	  ret+="  \u292B In "+getProcedure().getDB().getName()+" is named '"+name+ "' and in "+p.getProcedure().getDB().getName()+" is named '"+p.getName()+"'\n";
       }
-      if(name.equals(p.getName())) {
-    	  ret+= "  -Both have the equal type\n";}
+      if(type.equals(p.getType())) {
+    	  ret+= "  \u2713 Both have the equal type: '"+type+"'\n";}
       else{
-    	  ret+= "  -In "+getProcedure().getDB().getName()+" is of type '"+type+ "' and in "+p.getProcedure().getDB().getName()+" is of type '"+p.getType()+"'\n";
+    	  ret+= "  \u292B In "+getProcedure().getDB().getName()+" is of type '"+type+ "' and in "+p.getProcedure().getDB().getName()+" is of type '"+p.getType()+"'\n";
       }      
+  	  String[] types = {"","IN","INOUT","RETURN","OUT"};
       if(inout==p.getInOut()) {
-    	  ret+= "  -Both have the equal type of IN-OUT\n";}
+        ret+= "  \u2713 Both have the equal type of IN-OUT: '"+types[inout]+"'\n";}
       else{
-    	  String[] types = {"","IN","INOUT","RETURN","OUT"};
-    	  ret+= "  -In "+getProcedure().getDB().getName()+" is of in-out type '"+types[inout]+"' and in "+p.getProcedure().getDB().getName()+" is of in-out type '"+types[p.getInOut()]+"'\n";
+    	  ret+= "  \u292B In "+getProcedure().getDB().getName()+" is of in-out type '"+types[inout]+"' and in "+p.getProcedure().getDB().getName()+" is of in-out type '"+types[p.getInOut()]+"'\n";
       }    
     }
     return ret;
