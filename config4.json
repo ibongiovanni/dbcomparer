@@ -1,7 +1,7 @@
 {
   "DB_URL" : "jdbc:postgresql://localhost:5432/postgres",
   "JDBC_DRIVER" : "org.postgresql.Driver",
-  "SCHEMA" : "database2",
+  "SCHEMA" : "database4",
   "USER" : "postgres",
   "PASS" : "root"
 }
