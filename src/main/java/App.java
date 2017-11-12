@@ -14,35 +14,74 @@ public class App {
   static final String PASS = "root"; 
 
   public static void main(String[] args) {
+    if (args.length < 2) {
+      System.out.println("ERROR: Wrong number of params");
+      System.out.println("Use: program config_file1 config_file2");
+      return;
+    }
     Connection conn = null;
     try{
+      /*
+        Load DataBase 1
+      */
+      ConfigLoader cdb1 = new ConfigLoader(args[0]);
+      if (!cdb1.loadData()) {
+        System.out.println("Error loading data");
+        return;
+      }
+      else {
+        System.out.println("Data of "+args[0]+" loaded");
+      }
+
       //STEP 2: Register JDBC driver
-      Class.forName(JDBC_DRIVER);
+      Class.forName(cdb1.driver());
 
       //STEP 3: Open a connection
-      System.out.println("Connecting to database...");
-      conn = DriverManager.getConnection(DB_URL,USER,PASS);
+      System.out.println("Connecting to database "+cdb1.schema()+"...");
+      conn = DriverManager.getConnection(cdb1.url(),cdb1.user(),cdb1.pass());
 
-      DBMaker test = new DBMaker(conn, "database1");
+      DBMaker test = new DBMaker(conn, cdb1.schema());
 
       test.buildDB();
-      DataBase db = test.getDB();
+      DataBase db1 = test.getDB();
 
-      System.out.println(db);
       
       conn.close();
 
-      System.out.println("Connecting to database...");
-      conn = DriverManager.getConnection(DB_URL,USER,PASS);
+      /*
+        Load DataBase 2
+      */
+      ConfigLoader cdb2 = new ConfigLoader(args[1]);
+      if (!cdb2.loadData()) {
+        System.out.println("error loading data");
+        return;
+      }
+      else {
+        System.out.println("data loaded");
+      }
+      if (!cdb1.driver().equals(cdb2.driver())) {
+        System.out.println("Error: Both DataBases must be of the same type.");
+        return;
+      }
+      System.out.println("Connecting to database "+cdb2.schema()+"...");
+      conn = DriverManager.getConnection(cdb2.url(),cdb2.user(),cdb2.pass());
 
-      test = new DBMaker(conn, "database4");
+      test = new DBMaker(conn, cdb2.schema());
 
       test.buildDB();
       DataBase db2 = test.getDB();
 
+      /*
+        Show Both Databases info
+      */
+      System.out.println(db1);
       System.out.println(db2);
 
-      System.out.println(db.compare(db2));
+      /*
+        Compare Both Databases
+      */
+      DBComparator dbc = new DBComparator(db1,db2);
+      System.out.println(dbc.compare());
 
     }catch(ClassNotFoundException cnfe) {
       System.err.println("Error loading driver: " + cnfe);
