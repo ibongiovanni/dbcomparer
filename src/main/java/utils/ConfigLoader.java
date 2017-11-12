@@ -9,6 +9,8 @@
 package utils;
 
 import com.google.gson.Gson;
+import java.util.*;
+import java.io.*;
 
 public class ConfigLoader {
   
@@ -23,10 +25,10 @@ public class ConfigLoader {
 
   public ConfigLoader(String path){
     fpath=path;
-    fcontent= readFile(fpath);
   }
 
-  public boolean loadData(){
+  public boolean loadData() throws IOException {
+    fcontent= readFile(fpath);
     Properties data = new Gson().fromJson(fcontent, Properties.class);
     //Set data
     url = data.getProperty("DB_URL");
@@ -42,19 +44,23 @@ public class ConfigLoader {
     } 
   }
 
-  public String getURL(){
+  public String url(){
     return url;
   }
 
-  public String getDriver(){
+  public String driver(){
     return driver;
   }
 
-  public String getUser(){
+  public String schema(){
+    return schema;
+  }
+
+  public String user(){
     return user;
   }
 
-  public String getPass(){
+  public String pass(){
     return pass;
   }
 
