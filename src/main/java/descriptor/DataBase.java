@@ -136,7 +136,7 @@ public class DataBase {
     String[] lines = in.split("\n");
     StringBuilder builder = new StringBuilder();
     for (String line : lines) {
-        builder.append("\t|"+line);
+        builder.append("  |"+line);
         // I suspect you want this, otherwise you're losing line breaks.
         builder.append("\n");
     }

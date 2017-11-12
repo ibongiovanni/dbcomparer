@@ -38,16 +38,27 @@ public class Trigger {
   @Override
   public boolean equals(Object o){
     Trigger t = (Trigger)o; 
-    return (name==t.getName() && timing==t.getTiming() && event==t.getEvent());
+    return (name.equals(t.getName()) && timing==t.getTiming() && event.equals(t.getEvent()));
   }
 
   public String compare(Trigger t){
+    String ret="";
+    String db1=table.getDB().getName();
+    String db2=t.getTable().getDB().getName();
     if (this.equals(t)) {
-      return "Trigger "+name+" es igual a Trigger "+t.getName();
+      ret+= " \u2713 Trigger "+name+" in both databases is fired ";
+      ret+= (timing)? "BEFORE":"AFTER";
+      ret+= " "+event.toUpperCase();
     }
     else {
-      return "Trigger "+name+" es distinto a Trigger "+t.getName();
+      ret+= " \u292B Trigger "+name+" in "+db1+" is fired ";
+      ret+= (timing)? "BEFORE":"AFTER";
+      ret+= " "+event.toUpperCase();
+      ret+= ", and in "+db2+" ";
+      ret+= (t.getTiming())? "BEFORE":"AFTER";
+      ret+= " "+t.getEvent().toUpperCase();
     }
+    return ret;
   }
 
   @Override
@@ -56,7 +67,7 @@ public class Trigger {
     ret+= name+" on ";
     ret+= table.getName()+" ";
     ret+= (timing)? "BEFORE":"AFTER";
-    ret+= " "+event;
+    ret+= " "+event.toUpperCase();
     return ret;
   }
 

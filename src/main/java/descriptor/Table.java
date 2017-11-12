@@ -168,8 +168,27 @@ public class Table {
       }
     }
     //TRIGGERS COMPARISON
+    ret+= sep+"Triggers:\n";
+    List<Trigger> commonTs = getCommonTriggers(t);
+    if (commonTs.size()==0) {
+      ret+= " \u292B There are no Triggers in common.\n";
+    }
+    else{
+      for ( Trigger tr : commonTs ) {
+        ret+= " "+findTrigger(tr.getName()).compare(tr)+"\n";
+      }
+    }
 
     return ret+sep;
+  }
+
+  public String listColumns(List<Column> list){
+    String ret = "";
+    for ( Column c : list ) {
+      ret+= c.getName()+" | ";
+    }
+    ret = ret.substring(0,ret.length()-2);
+    return "[ "+ret+"]";
   }
 
   private List<Column> getCommonCoulumns(Table ot){
@@ -184,15 +203,6 @@ public class Table {
       }
     }
     return commons;
-  }
-
-  public String listColumns(List<Column> list){
-    String ret = "";
-    for ( Column c : list ) {
-      ret+= c.getName()+" | ";
-    }
-    ret = ret.substring(0,ret.length()-2);
-    return "[ "+ret+"]";
   }
   
   private List<ForeignKey> getCommonFKs(Table t){
@@ -217,6 +227,20 @@ public class Table {
         //Both constraints have the same clause
         if (c.getConstraint().equals(oc.getConstraint())) {
           commons.add(oc);
+        }
+      }
+    }
+    return commons;
+  }
+
+  private List<Trigger> getCommonTriggers(Table t){
+    List<Trigger> others = t.getTriggers();
+    List<Trigger> commons = new ArrayList<>();
+    for ( Trigger tr : triggers ) {
+      for ( Trigger otr : others ) {
+        //Both triggers have the same name
+        if (tr.getName().equals(otr.getName())) {
+          commons.add(otr);
         }
       }
     }
@@ -293,6 +317,13 @@ public class Table {
     return null;
   }
   
-  
+  public Trigger findTrigger(String name){
+    for( int i = 0 ; i < triggers.size() ; i++ ){
+      if (triggers.get(i).getName().equals(name)){
+        return triggers.get(i);
+      }
+    }
+    return null;
+  }
   
 }
