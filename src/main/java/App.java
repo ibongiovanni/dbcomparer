@@ -57,7 +57,7 @@ public class App {
         return;
       }
       else {
-        System.out.println("data loaded");
+        System.out.println("Data of "+args[1]+" loaded");
       }
       if (!cdb1.driver().equals(cdb2.driver())) {
         System.out.println("Error: Both DataBases must be of the same type.");

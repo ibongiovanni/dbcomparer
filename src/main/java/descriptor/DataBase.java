@@ -152,7 +152,7 @@ public class DataBase {
     
   @Override
   public String toString(){
-    String s = sep+"Data Base: " + name + "\n";
+    String s = sep+"Database: " + name + "\n";
     for( int i = 0 ; i < tables.size() ; i++ ){
       String t;
       t = tables.get( i ).toString() + "\n";

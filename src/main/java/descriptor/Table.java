@@ -148,7 +148,12 @@ public class Table {
     ret+= sep+"Foreign Keys:\n";
     List<ForeignKey> commons = getCommonFKs(t);
     if (commons.size()==0) {
-      ret+= " \u292B There are no Foreign Keys in common.\n";
+      if (foreignKey.size()==0 && t.getFK().size()==0) {
+        ret+= " \u2713 None of two tables has Foreign Keys.\n";
+      }
+      else {
+        ret+= " \u292B There are no Foreign Keys in common.\n";
+      }
     }
     else{
       for ( ForeignKey fk : commons ) {
@@ -171,7 +176,12 @@ public class Table {
     ret+= sep+"Triggers:\n";
     List<Trigger> commonTs = getCommonTriggers(t);
     if (commonTs.size()==0) {
-      ret+= " \u292B There are no Triggers in common.\n";
+      if (triggers.size()==0 && t.getTriggers().size()==0) {
+        ret+= " \u2713 None of two tables has Triggers associated.\n";
+      }
+      else {
+        ret+= " \u292B There are no Triggers in common.\n";
+      }
     }
     else{
       for ( Trigger tr : commonTs ) {
