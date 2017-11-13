@@ -190,10 +190,17 @@ public class DataBase {
   private String tabulate(String in){
     String[] lines = in.split("\n");
     StringBuilder builder = new StringBuilder();
-    for (String line : lines) {
-        builder.append("  |"+line);
-        // I suspect you want this, otherwise you're losing line breaks.
-        builder.append("\n");
+    // for (String line : lines) {
+    //     builder.append("  |"+line);
+    //     // I suspect you want this, otherwise you're losing line breaks.
+    //     builder.append("\n");
+    // }
+    for (int i=0; i<lines.length ;i++ ) {
+      String pre="  |";
+      if (i==0 || i==lines.length-1) {
+        pre ="  +";
+      }
+      builder.append(pre+lines[i]+"\n");
     }
     return builder.toString();
   }
