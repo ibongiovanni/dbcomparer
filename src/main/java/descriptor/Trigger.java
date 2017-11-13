@@ -46,12 +46,12 @@ public class Trigger {
     String db1=table.getDB().getName();
     String db2=t.getTable().getDB().getName();
     if (this.equals(t)) {
-      ret+= " \u2713 Trigger "+name+" in both databases is fired ";
+      ret+= " \u2713 Trigger '"+name+"' in both databases is fired ";
       ret+= (timing)? "BEFORE":"AFTER";
       ret+= " "+event.toUpperCase();
     }
     else {
-      ret+= " \u292B Trigger "+name+" in "+db1+" is fired ";
+      ret+= " \u292B Trigger '"+name+"' in "+db1+" is fired ";
       ret+= (timing)? "BEFORE":"AFTER";
       ret+= " "+event.toUpperCase();
       ret+= ", and in "+db2+" ";
