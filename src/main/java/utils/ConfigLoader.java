@@ -32,7 +32,7 @@ public class ConfigLoader {
       fcontent= readFile(fpath);
     }
     catch (IOException e) {
-      System.out.println("ERORR: "+e. getMessage());
+      System.out.println("\uE532 ERORR: "+e. getMessage());
       return false;
     }
     Properties data = new Gson().fromJson(fcontent, Properties.class);

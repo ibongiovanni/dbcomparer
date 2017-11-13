@@ -26,18 +26,18 @@ public class App {
       */
       ConfigLoader cdb1 = new ConfigLoader(args[0]);
       if (!cdb1.loadData()) {
-        System.out.println("Error loading data");
+        System.out.println("\uE532 Error loading data");
         return;
       }
       else {
-        System.out.println("Data of "+args[0]+" loaded");
+        System.out.println("\uE531 Data of "+args[0]+" loaded");
       }
 
       //STEP 2: Register JDBC driver
       Class.forName(cdb1.driver());
 
       //STEP 3: Open a connection
-      System.out.println("Connecting to database "+cdb1.schema()+"...");
+      System.out.println("\uE39D Connecting to database "+cdb1.schema()+"...");
       conn = DriverManager.getConnection(cdb1.url(),cdb1.user(),cdb1.pass());
 
       DBMaker test = new DBMaker(conn, cdb1.schema());
@@ -53,17 +53,17 @@ public class App {
       */
       ConfigLoader cdb2 = new ConfigLoader(args[1]);
       if (!cdb2.loadData()) {
-        System.out.println("error loading data");
+        System.out.println("\uE532  Error loading data");
         return;
       }
       else {
-        System.out.println("Data of "+args[1]+" loaded");
+        System.out.println("\uE531 Data of "+args[1]+" loaded");
       }
       if (!cdb1.driver().equals(cdb2.driver())) {
         System.out.println("Error: Both DataBases must be of the same type.");
         return;
       }
-      System.out.println("Connecting to database "+cdb2.schema()+"...");
+      System.out.println("\uE39D Connecting to database "+cdb2.schema()+"...");
       conn = DriverManager.getConnection(cdb2.url(),cdb2.user(),cdb2.pass());
 
       test = new DBMaker(conn, cdb2.schema());
